@@ -1,0 +1,64 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+  orderer.majani.com:
+    container_name: orderer.majani.com
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+      - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../crypto-config/ordererOrganizations/majani.com/orderers/orderer.majani.com/msp:/var/hyperledger/orderer/msp
+      - ../crypto-config/ordererOrganizations/majani.com/orderers/orderer.majani.com/tls/:/var/hyperledger/orderer/tls
+      - orderer.majani.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+
+  peer0.farmerorg.majani.com:
+    container_name: peer0.farmerorg.majani.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.farmerorg.majani.com
+      - CORE_PEER_ADDRESS=peer0.farmerorg.majani.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.farmerorg.majani.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.farmerorg.majani.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.farmerorg.majani.com:7051
+      - CORE_PEER_LOCALMSPID=FarmerOrgMSP
+    volumes:
+      - $UNIX_SOCK:/host/var/run/docker.sock
+      - ../crypto-config/peerOrganizations/farmerorg.majani.com/peers/peer0.farmerorg.majani.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/farmerorg.majani.com/peers/peer0.farmerorg.majani.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.farmerorg.majani.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+
+  peer0.factoryorg.majani.com:
+    container_name: peer0.factoryorg.majani.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.factoryorg.majani.com
+      - CORE_PEER_ADDRESS=peer0.factoryorg.majani.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.factoryorg.majani.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.factoryorg.majani.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.factoryorg.majani.com:8051
+      - CORE_PEER_LOCALMSPID=factoryorgMSP
+    volumes:
+      - $UNIX_SOCK:/host/var/run/docker.sock
+      - ../crypto-config/peerOrganizations/factoryorg.majani.com/peers/peer0.factoryorg.majani.com/msp:/etc/hyperledger/fabric/msp
+      - ../crypto-config/peerOrganizations/factoryorg.majani.com/peers/peer0.factoryorg.majani.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.factoryorg.majani.com:/var/hyperledger/production
+    ports:
+      - 8051:8051

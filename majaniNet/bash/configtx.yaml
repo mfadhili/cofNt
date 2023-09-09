@@ -1,0 +1,237 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+################################################################################
+#
+#   Section: Organizations
+#
+#   - This section defines the different organizational identities which will
+#   be referenced later in the configuration.
+#
+################################################################################
+
+Organizations:
+  # MajaniOrdererOrg defines an MSP using the sampleconfig.  It should never be used
+  # in production but may be used as a template for other definitions
+  - &MajaniOrdererOrg
+    Name: MajaniOrdererOrg
+    ID: MajaniOrdererOrgMSP
+    MSPDir: crypto-config/ordererOrganizations/majani.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('MajaniOrdererOrgMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('MajaniOrdererOrgMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('MajaniOrdererOrgMSP.admin')"
+    OrdererEndpoints:
+      - orderer.majani.com:7050
+
+  - &FarmerOrg
+    Name: FarmerOrg
+    ID: FarmerOrgMSP
+    MSPDir: crypto-config/peerOrganizations/farmerorg.majani.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.admin', 'FarmerOrgMSP.peer', 'FarmerOrgMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.admin', 'FarmerOrgMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('FarmerOrgMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.farmerorg.majani.com
+        Port: 7051
+
+  - &FactoryOrg
+    Name: FactoryOrg
+    ID: FactoryOrgMSP
+    MSPDir: crypto-config/peerOrganizations/factoryorg.majani.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('FactoryOrgMSP.admin', 'FactoryOrgMSP.peer', 'FactoryOrgMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('FactoryOrgMSP.admin', 'FactoryOrgMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('FactoryOrgMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('FactoryOrgMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.factoryorg.majani.com
+        Port: 8051
+
+
+
+################################################################################
+#
+#   SECTION: Capabilities
+#
+#   - This section defines the capabilities of fabric network. This is a new
+#   concept as of v1.1.0 and should not be utilized in mixed networks with
+#   v1.0.x peers and orderers.  Capabilities define features which must be
+#   present in a fabric binary for that binary to safely participate in the
+#   fabric network.  For instance, if a new MSP type is added, newer binaries
+#   might recognize and validate the signatures from this type, while older
+#   binaries without this support would be unable to validate those
+#   transactions.  This could lead to different versions of the fabric binaries
+#   having different world states.  Instead, defining a capability for a channel
+#   informs those binaries without this capability that they must cease
+#   processing transactions until they have been upgraded.  For v1.0.x if any
+#   capabilities are defined (including a map with all capabilities turned off)
+#   then the v1.0.x peer will deliberately crash.
+#
+################################################################################
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+################################################################################
+#
+#   SECTION: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+
+
+################################################################################
+#
+#   SECTION: Orderer
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for orderer related parameters
+#
+################################################################################
+
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+    - orderer.majani.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers:
+      - 127.0.0.1:9092
+  EtcdRaft:
+    Consenters:
+      - Host: orderer.majani.com
+        Port: 7050
+        ClientTLSCert: crypto-config/ordererOrganizations/majani.com/orderers/orderer.majani.com/tls/server.crt
+        ServerTLSCert: crypto-config/ordererOrganizations/majani.com/orderers/orderer.majani.com/tls/server.crt
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+
+################################################################################
+#
+#   CHANNEL
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+
+################################################################################
+#
+#   Profile
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+
+Profiles:
+  TwoOrgsOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *MajaniOrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      MajaniConsortium:
+        Organizations:
+          - *FarmerOrg
+          - *FactoryOrg
+  TwoOrgsMajaniChannel:
+    Consortium: MajaniConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *FarmerOrg
+        - *FactoryOrg
+      Capabilities:
+        <<: *ApplicationCapabilities
+

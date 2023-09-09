@@ -1,0 +1,42 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# ---------------------------------------------------------------------------
+# "OrderOrgs" - Definition of organisations managing orderer nodes
+# MajaniOderer
+# "Specs" - See PeerOrgs below for complete description
+# PeerOrgs" - Definition of organizations managing peer nodes ( FarmerOrg, factory)
+# Specs can be added , check original
+
+# ---------------------------------------------------------------------------
+
+
+OrdererOrgs:
+  - Name: MajaniOrderer
+    Domain: majani.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: FarmerOrg
+    Domain: farmerorg.majani.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 2
+
+  - Name: FactoryOrg
+    Domain: factoryorg.majani.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 2
+
+
+
+
+

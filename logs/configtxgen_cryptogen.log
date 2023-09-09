@@ -1,0 +1,110 @@
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ cryptogen generate --config=../coffeeNet/bash/crypto-config.yaml
+cryptogen: error: open ../coffeeNet/bash/crypto-config.yaml: no such file or directory, try --help
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ cryptogen generate --config=../majaniNet/bash/crypto-config.yaml
+farmerorg.majani.com
+factoryorg.majani.com
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ echo Genesis
+Genesis
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ configtx
+configtxgen    configtxlator
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test
+$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -outputBlock ./channel-ar
+tifacts/genesis.block
+2023-09-06 07:51:28.558 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 07:51:28.559 EAT [common.tools.configtxgen.localconfig] Load -> PANI 002 Error reading configuration: Unsupported Config Type ""
+2023-09-06 07:51:28.559 EAT [common.tools.configtxgen] func1 -> ERRO 003 Could not find configtx.yaml. Please make sure that FABRIC_CFG_PATH or -configPath is set to a path which contains configtx.yaml
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test
+$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -configPath ../ -outputBlock ./channel-artifacts/genesis.block
+.git/          .idea/         majaniNet/     README.md      test/          trade-network/
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test
+$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -configPath ../majaniNet/bash/c -outputBlock ./channel-artifacts/genesis.block
+configtx.yaml       crypto-config.yaml
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -configPath ../majaniNet/bash/c -outputBlock ./channel-artifacts/genesis.block
+configtx.yaml       crypto-config.yaml
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -configPath ../majaniNet/bash/ -outputBlock ./channel-artifacts/genesis.block
+2023-09-06 07:53:16.340 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 07:53:16.351 EAT [common.tools.configtxgen.localconfig] Load -> PANI 002 Error loading config from config cache: Error unmarshaling config into struct: 2 error(s) decoding:
+
+* 'Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+* 'Profiles[TwoOrgsOrdererGenesis].Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+2023-09-06 07:53:16.351 EAT [common.tools.configtxgen] func1 -> PANI 003 Error loading config from config cache: Error unmarshaling config into struct: 2 error(s) decoding:
+
+* 'Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+* 'Profiles[TwoOrgsOrdererGenesis].Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+panic: Error loading config from config cache: Error unmarshaling config into struct: 2 error(s) decoding:
+
+* 'Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+* 'Profiles[TwoOrgsOrdererGenesis].Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes [recovered]
+        panic: Error loading config from config cache: Error unmarshaling config into struct: 2 error(s) decoding:
+
+* 'Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+* 'Profiles[TwoOrgsOrdererGenesis].Orderer' has invalid keys: AbsoluteMaxBytes, MaxMessageCount, PreferredMaxBytes
+
+goroutine 1 [running]:
+go.uber.org/zap/zapcore.(*CheckedEntry).Write(0xc0000bbce0, {0x0, 0x0, 0x0})
+        /home/runner/work/fabric/fabric/vendor/go.uber.org/zap/zapcore/entry.go:230 +0x486
+go.uber.org/zap.(*SugaredLogger).log(0xc000014300, 0x4, {0xc0000fe500?, 0x2?}, {0x0?, 0x112?, 0x114?}, {0x0, 0x0, 0x0})
+        /home/runner/work/fabric/fabric/vendor/go.uber.org/zap/sugar.go:234 +0x13b
+go.uber.org/zap.(*SugaredLogger).Panicf(...)
+        /home/runner/work/fabric/fabric/vendor/go.uber.org/zap/sugar.go:159
+github.com/hyperledger/fabric/common/flogging.(*FabricLogger).Panic(0xc000014308?, {0xc0003a3940?, 0xa58523?, 0x16?})
+        /home/runner/work/fabric/fabric/common/flogging/zap.go:73 +0x5d
+main.main.func1()
+        /home/runner/work/fabric/fabric/cmd/configtxgen/main.go:256 +0x1b1
+panic({0x982d60, 0xc0003d0810})
+        /opt/hostedtoolcache/go/1.20.4/x64/src/runtime/panic.go:884 +0x213
+go.uber.org/zap/zapcore.(*CheckedEntry).Write(0xc0000bbce0, {0x0, 0x0, 0x0})
+        /home/runner/work/fabric/fabric/vendor/go.uber.org/zap/zapcore/entry.go:230 +0x486
+go.uber.org/zap.(*SugaredLogger).log(0xc0000142e0, 0x4, {0xa67d1e?, 0x15?}, {0xc0003a3d00?, 0x1?, 0x1?}, {0x0, 0x0, 0x0})
+        /home/runner/work/fabric/fabric/vendor/go.uber.org/zap/sugar.go:234 +0x13b
+go.uber.org/zap.(*SugaredLogger).Panicf(...)
+        /home/runner/work/fabric/fabric/vendor/go.uber.org/zap/sugar.go:159
+github.com/hyperledger/fabric/common/flogging.(*FabricLogger).Panicf(...)
+        /home/runner/work/fabric/fabric/common/flogging/zap.go:74
+github.com/hyperledger/fabric/internal/configtxgen/genesisconfig.Load({0x7ffcd699be22, 0x15}, {0xc00019bf48, 0x1, 0xa5a17d?})
+        /home/runner/work/fabric/fabric/internal/configtxgen/genesisconfig/config.go:249 +0x2bf
+main.main()
+        /home/runner/work/fabric/fabric/cmd/configtxgen/main.go:272 +0x845
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -configPath ../majaniNet/bash/ -outputBlock ./channel-artifacts/genesis.block
+2023-09-06 07:55:12.333 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 07:55:12.346 EAT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 002 orderer type: solo
+2023-09-06 07:55:12.346 EAT [common.tools.configtxgen.localconfig] Load -> INFO 003 Loaded configuration: /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/configtx.yaml
+2023-09-06 07:55:12.346 EAT [common.tools.configtxgen] main -> FATA 004 Error on outputBlock: could not create bootstrapper: could not create channel group: could not create orderer group: failed to create orderer org: 1 - Error loading MSP configuration for org: MajaniOrdererOrg: could not load a valid ca certificate from directory /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/crypto-config/ordererOrganizations/majani.com/msp/cacerts: stat /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/crypto-config/ordererOrganizations/majani.com/msp/cacerts: no such file or directory
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ cd ../
+.git/          .idea/         majaniNet/     test/          trade-network/
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/test$ cd ../majaniNet/bash/
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/maja
+niNet/bash$ cryptogen generate --config=./crypto-config.yaml
+farmerorg.majani.com
+factoryorg.majani.com
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/maja
+niNet/bash$ configtxgen -profile TwoOrgsOrdererGenesis -channelID majani-sys-channel -configPath ./ -outputBlock ./channel-artifacts/genesis.block
+2023-09-06 07:57:59.540 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 07:57:59.550 EAT [common.tools.configtxgen.localconfig] completeInitialization -> INFO 002 orderer type: solo
+2023-09-06 07:57:59.550 EAT [common.tools.configtxgen.localconfig] Load -> INFO 003 Loaded configuration: /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/configtx.yaml
+2023-09-06 07:57:59.552 EAT [common.tools.configtxgen] doOutputBlock -> INFO 004 Generating genesis block
+2023-09-06 07:57:59.555 EAT [common.tools.configtxgen] doOutputBlock -> INFO 005 Writing genesis block
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/maja
+niNet/bash$ configtxgen -profile TwoOrgsMajaniChannel -outputCreateChannelTx ./c -channelID majani-sys-channel -configPath ./ -outputBlock ./channel-artifacts/genesis.block
+channel-artifacts/  configtx.yaml       crypto-config/      crypto-config.yaml
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/maja
+niNet/bash$ configtxgen -profile TwoOrgsMajaniChannel -outputCreateChannelTx ./channel-artifacts/maj
+anichannel/channel.tx -channelID majanichannel -configPath ./
+2023-09-06 08:02:45.642 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 08:02:45.657 EAT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/configtx.yaml
+2023-09-06 08:02:45.657 EAT [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 003 Generating new channel configtx
+2023-09-06 08:02:45.660 EAT [common.tools.configtxgen] doOutputChannelCreateTx -> INFO 004 Writing new channel tx
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/maja
+niNet/bash$ configtxgen -profile TwoOrgsMajaniChannel -outputAnchorPeersUpdate ./channel-artifacts/m
+ajanichannel/FarmerOrgMSPanchors.tx -channelID majanichannel -asOrg FarmerOrg -configPath ./
+2023-09-06 08:07:59.851 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 08:07:59.860 EAT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/configtx.yaml
+2023-09-06 08:07:59.860 EAT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 003 Generating anchor peer update
+2023-09-06 08:07:59.862 EAT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 004 Writing anchor peer update
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash$ configtxgen -profile TwoOrgsMajaniChannel -outputAnchorPeersUpdate ./channel-artifacts/majanichannel/FactoryOrgMSPanchors.tx -channelID majanichannel -asOrg FactoryOrg -configPath ./
+2023-09-06 08:08:20.755 EAT [common.tools.configtxgen] main -> INFO 001 Loading configuration
+2023-09-06 08:08:20.764 EAT [common.tools.configtxgen.localconfig] Load -> INFO 002 Loaded configuration: /home/mfadhili/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash/configtx.yaml
+2023-09-06 08:08:20.764 EAT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 003 Generating anchor peer update
+2023-09-06 08:08:20.767 EAT [common.tools.configtxgen] doOutputAnchorPeersUpdate -> INFO 004 Writing anchor peer update
+mfadhili@mfadhili-HP-ProBook-440-G5:~/Desktop/Dev/agrinetcom/learn/blockchain/hypldgr/CoffeeNet/majaniNet/bash$
