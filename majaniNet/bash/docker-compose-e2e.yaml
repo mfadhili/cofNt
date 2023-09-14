@@ -1,0 +1,76 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.majani.com:
+  peer0.farmerorg.majani.com:
+  peer0.factoryorg.majani.com:
+  ca.farmerorg.majani.com:
+  ca.factoryorg.majani.com:
+
+networks:
+  majani:
+services:
+  farmer-ca:
+    image: hyperledger/fabric-ca:$CA_IMAGE_TAG
+    platform: $PLATFORM
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-farmerorg
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.farmerorg.majani.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.farmerorg.majani.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/priv_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/farmerorg.majani.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ca.farmerorg.majani.com:/etc/hyperledger/fabric-ca-server
+    container_name: ca.farmerorg.majani.com
+    networks:
+      - majani
+
+  factory-ca:
+    image: hyperledger/fabric-ca:$CA_IMAGE_TAG
+    platform: $PLATFORM
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-factoryorg
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.factoryorg.majani.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+    ports:
+      - "8054:8054"
+    command: sh -c 'fabric-ca-server start --port 8054 --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.factoryorg.majani.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/priv_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/factoryorg.majani.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ca.factoryorg.majani.com:/etc/hyperledger/fabric-ca-server
+    container_name: ca.factoryorg.majani.com
+    networks:
+      - majani
+
+  orderer.majani.com:
+    extends:
+      file: base/docker-compose-base.yaml
+      service: orderer.majani.com
+    container_name: orderer.majani.com
+    networks:
+      - majani
+
+  peer0.farmerorg.majani.com:
+    container_name: peer0.farmerorg.majani.com
+    extends:
+      file: base/docker-compose-base.yaml
+      service: peer0.farmerorg.majani.com
+    networks:
+      - majani
+  peer0.factoryorg.majani.com:
+    container_name: peer0.factoryorg.majani.com
+    extends:
+      file: base/docker-compose-base.yaml
+      service: peer0.factoryorg.majani.com
+    networks:
+      - majani
